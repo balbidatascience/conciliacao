@@ -75,6 +75,25 @@ def extractIRFiles():
 
     return df
 
+def extractIRFile(fileName) :
+    df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1')
+    #Slice only transaction rows
+    df = df[df['Bandeira'].isnull() == False]
+    df['Parcela'] = df['Parcela'].fillna(0).astype(int)
+    df['Valor do Pagamento'] = df['Valor do Pagamento'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['Valor da Parcela'] = df['Valor da Parcela'].fillna('0')
+    df['Valor Adicional 1'] = df['Valor Adicional 1'].fillna('0')
+    df['Valor Adicional 2'] = df['Valor Adicional 2'].fillna('0')
+    df['Valor da Diferença'] = df['Valor da Diferença'].fillna('0')
+    df['Valor da Parcela'] = df['Valor da Parcela'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Adicional 1'] = df['Valor Adicional 1'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Adicional 2'] = df['Valor Adicional 2'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['Valor da Diferença'] = df['Valor da Diferença'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+
+    df = df.iloc[0:len(df), 0:33]
+    return df
+
 def extractCancelFiles():
     fileName = 'vendas-canceladas-contestadas20170601-20170615.csv'
     df = pd.read_csv(defaultPath + 'dados/' + fileName, delimiter=';', dtype=object, encoding='latin_1')

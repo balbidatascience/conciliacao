@@ -45,7 +45,7 @@ def insertDsTransacaoIR(cursor, conn, dfRows):
     # convert na, nan e nat para NULL
     dfRows = dfRows.astype(object).where(pd.notnull(dfRows), None)
 
-    dfRows['Data da Transaçăo'] = dfRows['Data da Transaçăo'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    dfRows['Data da Transação'] = dfRows['Data da Transação'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
     dfRows['Data da Venda'] = dfRows['Data da Venda'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
 
     query = ("INSERT INTO [dbo].[dsTransacaoIR] "

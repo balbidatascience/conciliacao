@@ -29,9 +29,21 @@ def LoadDsAdquirenteFiles():
     filesAdquirente, filesIR, filesCancelamento = ColetaDadosConciliacao.getFileNameGroup()
 
     for fileName in filesAdquirente:
-        print(fileName)
         df = ColetaDadosConciliacao.extractAdquirenteFile(fileName)
         repository.insertDsTransacaoAdquirente(cursor, conn, df)
+        ColetaDadosConciliacao.moveFile(fileName)
+
+    return True;
+
+def LoadDsIRFiles():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    filesAdquirente, filesIR, filesCancelamento = ColetaDadosConciliacao.getFileNameGroup()
+
+    for fileName in filesIR:
+        print(fileName)
+        df = ColetaDadosConciliacao.extractIRFile(fileName)
+        repository.insertDsTransacaoIR(cursor, conn, df)
         ColetaDadosConciliacao.moveFile(fileName)
 
     return True;
@@ -39,7 +51,8 @@ def LoadDsAdquirenteFiles():
 #---------------------------------------------------------
 # TESTES
 
-LoadDsAdquirenteFiles()
+#LoadDsAdquirenteFiles()
+LoadDsIRFiles()
 
 #LoadDsCancelamento()
 
