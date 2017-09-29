@@ -20,24 +20,24 @@ defaultPathProcessFile = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/pytho
 
 def extractAdquirentesFiles() :
     fileName = 'transacoes-venda20170601-20170615.csv'
-    df = pd.read_csv(defaultPath + 'dados/' + fileName, delimiter=';', dtype=object, encoding='iso8859_2')
+    df = pd.read_csv(defaultPath + 'dados/' + fileName, delimiter=';', dtype=object, encoding='latin_1')
     df = df[df['ID Único EQUALS'].isnull() == False]
 
     df['Parcela'] = df['Parcela'].fillna(0).astype(int)
     df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Comissăo'] = df['Valor Comissăo'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
     df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
     df['Valor Rejeitado'] = df['Valor Rejeitado'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
     #df = df.iloc[0:len(df), 2:38];
     return df
 
 def extractAdquirenteFile(fileName) :
-    df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='iso8859_2')
+    df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1')
     df = df[df['ID Único EQUALS'].isnull() == False]
 
     df['Parcela'] = df['Parcela'].fillna(0).astype(int)
     df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Comissăo'] = df['Valor Comissăo'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
     df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
     df['Valor Rejeitado'] = df['Valor Rejeitado'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
     return df
@@ -99,7 +99,7 @@ def extractCancelFiles():
     df = pd.read_csv(defaultPath + 'dados/' + fileName, delimiter=';', dtype=object, encoding='latin_1')
     df_rows = df[df['Bandeira'].isnull() == False]
     df_rows = df_rows.iloc[0:len(df_rows), 0:33]
-    # Munging
+
     df_rows['Parcela'] = df_rows['Parcela'].fillna(0).astype(int)
     df_rows['Dt. Venda'] = df_rows['Dt. Venda'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
     df_rows['Data Captura'] = df_rows['Data Captura'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
@@ -111,6 +111,21 @@ def extractCancelFiles():
     df_rows['Vlr. Líquido Cancelamento'] = df_rows['Vlr. Líquido Cancelamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
 
     return df_rows
+
+def extractCancelFile(fileName) :
+    df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1')
+    df = df[df['Bandeira'].isnull() == False]
+    df = df.iloc[0:len(df), 0:33]
+    df['Parcela'] = df['Parcela'].fillna(0).astype(int)
+    df['Dt. Venda'] = df['Dt. Venda'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    df['Data Captura'] = df['Data Captura'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    df['Data do Cancelamento'] = df['Data do Cancelamento'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Vlr. Bruto Cancelamento'] = df['Vlr. Bruto Cancelamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Vlr. Líquido Cancelamento'] = df['Vlr. Líquido Cancelamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    return df
 
 def getFileNameGroup():
     pasta = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/'

@@ -23,7 +23,7 @@ def insertDsTransacaoAdquirente(cursor, conn, dfRows):
     #format datetime para mm/dd/yyyy
     dfRows['Data'] = dfRows['Data'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
     dfRows['Data Captura'] = dfRows['Data Captura'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'),na_action='ignore')
-    dfRows['Data da Situaçăo'] = dfRows['Data da Situaçăo'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'),na_action='ignore')
+    dfRows['Data da Situação'] = dfRows['Data da Situação'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'),na_action='ignore')
     #dfRows['Data'] = dfRows['Data'].map(lambda x:str(x).replace(" 00:00:00", ""))
     #dfRows['Data'] = dfRows['Data'].map(lambda x:datetime.strptime(str(x), "%Y-%d-%m").strftime('%Y-%m-%d'), na_action='ignore')
 
@@ -89,7 +89,7 @@ def insertDsTransacaoIR(cursor, conn, dfRows):
 
     return True
 
-def InsertDsCancelamento(cursor, conn, dfRows):
+def insertDsCancelamento(cursor, conn, dfRows):
     # convert na, nan e nat para NULL
     dfRows = dfRows.astype(object).where(pd.notnull(dfRows), None)
 
