@@ -3,33 +3,45 @@ from Services import ColetaDadosConciliacao
 
 
 def LoadDsTransacaoAdquirentes() :
-    conn = repository.openConn();
-    cursor = repository.openCursor(conn);
-
-    df = ColetaDadosConciliacao.extractAdquirentesFiles();
-    dfHead, dfRow = ColetaDadosConciliacao.SliceAdquirentesFilesHeaderAndRows(df);
-
-    repository.insertDsTransacaoAdquirente(cursor, conn, dfRow);
-    return True;
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    df = ColetaDadosConciliacao.extractAdquirentesFiles()
+    repository.insertDsTransacaoAdquirente(cursor, conn, df)
+    return True
 
 def LoadDsTransacaoIR():
-    conn = repository.openConn();
-    cursor = repository.openCursor(conn);
-    dfHead, dfRow = ColetaDadosConciliacao.extractIRFiles();
-    repository.insertDsTransacaoIR(cursor, conn, dfRow);
-    return True;
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    dfRow = ColetaDadosConciliacao.extractIRFiles()
+    repository.insertDsTransacaoIR(cursor, conn, dfRow)
+    return True
 
 def LoadDsCancelamento():
     conn = repository.openConn()
     cursor = repository.openCursor(conn)
-    df = ColetaDadosConciliacao.ExtractCanceledFiles()
+    df = ColetaDadosConciliacao.extractCancelFiles()
     repository.InsertDsCancelamento(cursor=cursor, conn=conn, dfRows=df)
+    return True
+
+def LoadDsAdquirenteFiles():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    filesAdquirente, filesIR, filesCancelamento = ColetaDadosConciliacao.getFileNameGroup()
+
+    for fileName in filesAdquirente:
+        print(fileName)
+        df = ColetaDadosConciliacao.extractAdquirenteFile(fileName)
+        repository.insertDsTransacaoAdquirente(cursor, conn, df)
+        ColetaDadosConciliacao.moveFile(fileName)
+
     return True;
 
 #---------------------------------------------------------
 # TESTES
 
-LoadDsCancelamento()
+LoadDsAdquirenteFiles()
+
+#LoadDsCancelamento()
 
 #LoadDsTransacaoAdquirentes()
 #LoadDsTransacaoIR()

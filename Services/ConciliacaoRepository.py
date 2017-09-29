@@ -9,26 +9,21 @@ def openConn():
 def openCursor(conn):
     return conn.cursor();
 
-def execSelectTeste(cursor):
-    cursor.execute("select * from Teste");
-    x = [];
-    for row in cursor: x.append(print(row));
-    return x;
-
-def insertDsEstabelecimento(cursor, conn, dfHeader):
-    cursor.executemany(
-        "insert into dsEstabelecimentoAdquirente (Estabelecimento, VlrBruto, VlrComissao, VlrLiquido, VlrRejeitado) values (?,?,?,?,?)",
-        dfHeader.values.tolist());
-    conn.commit();
-    return True;
+# Deprecated
+#def insertDsEstabelecimento(cursor, conn, dfHeader):
+#    cursor.executemany(
+#        "insert into dsEstabelecimentoAdquirente (Estabelecimento, VlrBruto, VlrComissao, VlrLiquido, VlrRejeitado) values (?,?,?,?,?)",
+#        dfHeader.values.tolist());
+#    conn.commit();
+#    return True;
 
 def insertDsTransacaoAdquirente(cursor, conn, dfRows):
     # Tranformando os valores NAN/NA por NONE (que é aceito como NULL no SQL SERVER)
     dfRows = dfRows.astype(object).where(pd.notnull(dfRows), None);
     #format datetime para mm/dd/yyyy
     dfRows['Data'] = dfRows['Data'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
-    dfRows['Dt. Captura'] = dfRows['Dt. Captura'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'),na_action='ignore')
-    dfRows['Dt. Situação'] = dfRows['Dt. Situação'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'),na_action='ignore')
+    dfRows['Data Captura'] = dfRows['Data Captura'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'),na_action='ignore')
+    dfRows['Data da Situaçăo'] = dfRows['Data da Situaçăo'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'),na_action='ignore')
     #dfRows['Data'] = dfRows['Data'].map(lambda x:str(x).replace(" 00:00:00", ""))
     #dfRows['Data'] = dfRows['Data'].map(lambda x:datetime.strptime(str(x), "%Y-%d-%m").strftime('%Y-%m-%d'), na_action='ignore')
 
@@ -50,8 +45,8 @@ def insertDsTransacaoIR(cursor, conn, dfRows):
     # convert na, nan e nat para NULL
     dfRows = dfRows.astype(object).where(pd.notnull(dfRows), None)
 
-    dfRows['Dt. Transação'] = dfRows['Dt. Transação'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
-    dfRows['Dt. Venda'] = dfRows['Dt. Venda'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    dfRows['Data da Transaçăo'] = dfRows['Data da Transaçăo'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    dfRows['Data da Venda'] = dfRows['Data da Venda'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
 
     query = ("INSERT INTO [dbo].[dsTransacaoIR] "
            "([NroAutorizacao] "
@@ -60,7 +55,6 @@ def insertDsTransacaoIR(cursor, conn, dfRows):
            ",[Estabelecimento] "
            ",[CategoriaEstabelecimento] "
            ",[Adquirente] "
-           ",[idPagamento] "
            ",[EstabERP] "
            ",[CanalVenda] "
            ",[NroCanal] "
@@ -76,9 +70,7 @@ def insertDsTransacaoIR(cursor, conn, dfRows):
            ",[NSU] "
            ",[TID] "
            ",[Localizador] "
-           ",[MeioDeCaptura] "
            ",[Parc] " 
-           ",[QtdPagamentos] "
            ",[VlrPagamento] "
            ",[VlrLiquido] "
            ",[VlrParcela] "
@@ -89,10 +81,8 @@ def insertDsTransacaoIR(cursor, conn, dfRows):
            ",[Conciliacao] "
            ",[NomeTarefa] "
            ",[SituacaoTarefa] "
-           ",[SituacaoParam] "
-           ",[SituacaoConcParam] "
-           ",[FormaPagParam]) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+           ",[SituacaoParam]) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
     cursor.executemany(query, dfRows.values.tolist())
     conn.commit()
@@ -131,10 +121,10 @@ def InsertDsCancelamento(cursor, conn, dfRows):
            ",[VlrLiquido] "
            ",[VlrBrutoCancelamento] "
            ",[VlrLiquidoCancelamento] "
-           ",[MotivoCancelamento] "
            ",[Conciliacao] "
            ",[IDERPCanal] "
            ",[NomeCanal] "
+           ",[MotivoCancelamento] "
            ",[NomeTarefa] "
            ",[SituacaoTarefa]) "
      "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
