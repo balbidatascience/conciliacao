@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="93496310-85db-42bb-b840-204b80b5fef9" name="Default" comment="" />
+    <list default="true" id="93496310-85db-42bb-b840-204b80b5fef9" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Notebooks/TesteColeta-DataMunging.ipynb" afterPath="$PROJECT_DIR$/Notebooks/TesteColeta-DataMunging.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Services/ColetaDadosConciliacao.py" afterPath="$PROJECT_DIR$/Services/ColetaDadosConciliacao.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Services/ConciliacaoRepository.py" afterPath="$PROJECT_DIR$/Services/ConciliacaoRepository.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/TestesIRConciliacao.py" afterPath="$PROJECT_DIR$/Test/TestesIRConciliacao.py" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,20 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TesteColeta-DataMunging.ipynb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Notebooks/TesteColeta-DataMunging.ipynb">
-          <provider selected="true" editor-type-id="ipnb-editor">
-            <state>
-              <selected id="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ColetaDadosConciliacao.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ColetaDadosConciliacao.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Services/ColetaDadosConciliacao.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="66" lean-forward="true" selection-start-line="17" selection-start-column="66" selection-end-line="17" selection-end-column="66" />
+            <state relative-caret-position="335">
+              <caret line="78" column="77" lean-forward="false" selection-start-line="78" selection-start-column="70" selection-end-line="78" selection-end-column="77" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -35,11 +32,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestesIRConciliacao.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TestesIRConciliacao.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Test/TestesIRConciliacao.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="41" lean-forward="false" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
+            <state relative-caret-position="386">
+              <caret line="68" column="1" lean-forward="false" selection-start-line="68" selection-start-column="1" selection-end-line="68" selection-end-column="1" />
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
               </folding>
@@ -50,8 +47,8 @@
       <file leaf-file-name="ConciliacaoRepository.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Services/ConciliacaoRepository.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="40" column="30" lean-forward="false" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
+            <state relative-caret-position="170">
+              <caret line="91" column="24" lean-forward="false" selection-start-line="91" selection-start-column="4" selection-end-line="91" selection-end-column="24" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -74,6 +71,9 @@
       <find>;</find>
     </findStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -86,10 +86,10 @@
         <option value="$PROJECT_DIR$/Services/SqlService.py" />
         <option value="$PROJECT_DIR$/Notebooks/Testes.ipynb" />
         <option value="$PROJECT_DIR$/Notebooks/TesteColeta-DataMunging.ipynb" />
-        <option value="$PROJECT_DIR$/Test/TestesIRConciliacao.py" />
         <option value="$PROJECT_DIR$/Services/ConciliacaoDataMunging.py" />
         <option value="$PROJECT_DIR$/Services/ConciliacaoRepository.py" />
         <option value="$PROJECT_DIR$/Services/ColetaDadosConciliacao.py" />
+        <option value="$PROJECT_DIR$/Test/TestesIRConciliacao.py" />
       </list>
     </option>
   </component>
@@ -114,28 +114,23 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="ConciliationCollect" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ConciliationCollect" type="462c0819:PsiDirectoryNode" />
+              <item name="conciliacao" type="b2602c69:ProjectViewProjectNode" />
+              <item name="conciliacao" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ConciliationCollect" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ConciliationCollect" type="462c0819:PsiDirectoryNode" />
-              <item name="Notebooks" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ConciliationCollect" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ConciliationCollect" type="462c0819:PsiDirectoryNode" />
+              <item name="conciliacao" type="b2602c69:ProjectViewProjectNode" />
+              <item name="conciliacao" type="462c0819:PsiDirectoryNode" />
               <item name="Services" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -169,7 +164,24 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.ConciliacaoDataMunging">
+  <component name="RunManager" selected="Python.TestesIRConciliacao">
+    <configuration name="ColetaDadosConciliacao" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Services" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="IR" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Services/ColetaDadosConciliacao.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
     <configuration name="ConciliacaoDataMunging" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -187,19 +199,19 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <configuration name="ConciliacaoVendas" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="ConciliacaoRepository" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Services" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="IR" />
-      <option name="SCRIPT_NAME" value="D:\Gabriel\Develop\Python\IR\Services\ConciliacaoDataMunging.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Services/ConciliacaoRepository.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -237,23 +249,6 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <configuration name="SqlService" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Services" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="IR" />
-      <option name="SCRIPT_NAME" value="D:\Gabriel\Develop\Python\IR\Services\ConciliacaoRepository.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
     <configuration name="TestesIRConciliacao" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -273,19 +268,19 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Jupyter Notebook.IR" />
-      <item index="1" class="java.lang.String" itemvalue="Python.ConciliacaoVendas" />
-      <item index="2" class="java.lang.String" itemvalue="Python.SqlService" />
-      <item index="3" class="java.lang.String" itemvalue="Python.SqlService (1)" />
-      <item index="4" class="java.lang.String" itemvalue="Python.TestesIRConciliacao" />
-      <item index="5" class="java.lang.String" itemvalue="Python.ConciliacaoDataMunging" />
+      <item index="1" class="java.lang.String" itemvalue="Python.SqlService (1)" />
+      <item index="2" class="java.lang.String" itemvalue="Python.TestesIRConciliacao" />
+      <item index="3" class="java.lang.String" itemvalue="Python.ConciliacaoDataMunging" />
+      <item index="4" class="java.lang.String" itemvalue="Python.ColetaDadosConciliacao" />
+      <item index="5" class="java.lang.String" itemvalue="Python.ConciliacaoRepository" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.ConciliacaoDataMunging" />
-        <item index="1" class="java.lang.String" itemvalue="Python.TestesIRConciliacao" />
-        <item index="2" class="java.lang.String" itemvalue="Python.SqlService (1)" />
-        <item index="3" class="java.lang.String" itemvalue="Python.ConciliacaoVendas" />
-        <item index="4" class="java.lang.String" itemvalue="Python.SqlService" />
+        <item index="0" class="java.lang.String" itemvalue="Python.TestesIRConciliacao" />
+        <item index="1" class="java.lang.String" itemvalue="Python.ColetaDadosConciliacao" />
+        <item index="2" class="java.lang.String" itemvalue="Python.ConciliacaoRepository" />
+        <item index="3" class="java.lang.String" itemvalue="Python.ConciliacaoDataMunging" />
+        <item index="4" class="java.lang.String" itemvalue="Python.SqlService (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -315,11 +310,12 @@
     <frame x="-8" y="-8" width="2576" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.081478536" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.081875995" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48985958" sideWeight="0.5058565" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24086021" sideWeight="0.4941435" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24086021" sideWeight="0.4941435" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32686085" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24962178" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32686085" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -331,7 +327,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -734,26 +729,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Services/ConciliacaoRepository.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="40" column="30" lean-forward="false" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Test/TestesIRConciliacao.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="41" lean-forward="false" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Notebooks/TesteColeta-DataMunging.ipynb">
       <provider selected="true" editor-type-id="ipnb-editor">
         <state>
@@ -761,12 +736,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Services/ConciliacaoRepository.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="91" column="24" lean-forward="false" selection-start-line="91" selection-start-column="4" selection-end-line="91" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Services/ColetaDadosConciliacao.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="66" lean-forward="true" selection-start-line="17" selection-start-column="66" selection-end-line="17" selection-end-column="66" />
+        <state relative-caret-position="335">
+          <caret line="78" column="77" lean-forward="false" selection-start-line="78" selection-start-column="70" selection-end-line="78" selection-end-column="77" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Test/TestesIRConciliacao.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="386">
+          <caret line="68" column="1" lean-forward="false" selection-start-line="68" selection-start-column="1" selection-end-line="68" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
           </folding>
         </state>
       </provider>
