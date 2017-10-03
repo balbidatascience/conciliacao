@@ -80,16 +80,16 @@ def extractIRFile(fileName) :
     #Slice only transaction rows
     df = df[df['Bandeira'].isnull() == False]
     df['Parcela'] = df['Parcela'].fillna(0).astype(int)
-    df['Valor do Pagamento'] = df['Valor do Pagamento'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['Valor do Pagamento'] = df['Valor do Pagamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     df['Valor da Parcela'] = df['Valor da Parcela'].fillna('0')
     df['Valor Adicional 1'] = df['Valor Adicional 1'].fillna('0')
     df['Valor Adicional 2'] = df['Valor Adicional 2'].fillna('0')
     df['Valor da Diferença'] = df['Valor da Diferença'].fillna('0')
-    df['Valor da Parcela'] = df['Valor da Parcela'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Adicional 1'] = df['Valor Adicional 1'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Adicional 2'] = df['Valor Adicional 2'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor da Diferença'] = df['Valor da Diferença'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['Valor da Parcela'] = df['Valor da Parcela'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Adicional 1'] = df['Valor Adicional 1'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Adicional 2'] = df['Valor Adicional 2'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor da Diferença'] = df['Valor da Diferença'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
 
     df = df.iloc[0:len(df), 0:33]
     return df
@@ -136,6 +136,10 @@ def getFileNameGroup():
     caminhos = [os.path.join(pasta, nome) for nome in os.listdir(pasta)]
     arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
     csvFileNames = [arq for arq in arquivos if arq.lower().endswith(".csv")]
+
+    # Caso não tenha nenhum arquivo a ser importado.
+    if len(csvFileNames) == 0: return adquirenteFiles, irFiles, cancelamentoFiles
+
     csvFileNames = pd.DataFrame(csvFileNames)
     csvFileNames.columns = ['File']
 
@@ -166,16 +170,16 @@ def moveFile(fileName):
 
 
 ############
-pasta = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/'
-caminhos = [os.path.join(pasta, nome) for nome in os.listdir(pasta)]
-arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
-csvFileNames = [arq for arq in arquivos if arq.lower().endswith(".csv")]
+#pasta = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/'
+#caminhos = [os.path.join(pasta, nome) for nome in os.listdir(pasta)]
+#arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
+#csvFileNames = [arq for arq in arquivos if arq.lower().endswith(".csv")]
 
 #print(csvFileNames)
-csvFileNames = pd.DataFrame(csvFileNames)
+#csvFileNames = pd.DataFrame(csvFileNames)
 #print(csvFileNames.count())
 #print(csvFileNames.head())
-csvFileNames.columns = ['File']
+#csvFileNames.columns = ['File']
 
 
 #adquirenteFiles = []

@@ -65,7 +65,7 @@ def LoadDsCancelFiles():
 #---------------------------------------------------------
 # TESTES
 
-#LoadDsAdquirenteFiles()
+LoadDsAdquirenteFiles()
 LoadDsIRFiles()
 LoadDsCancelFiles()
 
