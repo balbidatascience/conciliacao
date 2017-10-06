@@ -62,17 +62,17 @@ def LoadDsCancelFiles():
 
     return True;
 
+def runETL():
+    LoadDsAdquirenteFiles()
+    LoadDsIRFiles()
+    LoadDsCancelFiles()
+    return True;
+
 #---------------------------------------------------------
 # TESTES
 
-LoadDsAdquirenteFiles()
-LoadDsIRFiles()
-LoadDsCancelFiles()
-
-#LoadDsCancelamento()
-
-#LoadDsTransacaoAdquirentes()
-#LoadDsTransacaoIR()
-
+#LoadDsAdquirenteFiles()
+#LoadDsIRFiles()
+#LoadDsCancelFiles()
 
 #LoadDsTransacaoAdquirentes()
