@@ -1,10 +1,10 @@
 from datetime import datetime
 import pandas as pd
-import numpy as np
-import matplotlib as plt
-from scipy import stats
-import seaborn as sns
-import pyodbc
+#import numpy as np
+#import matplotlib as plt
+#from scipy import stats
+#import seaborn as sns
+#import pyodbc
 import os
 import shutil
 
@@ -12,25 +12,10 @@ import shutil
 #iris = sns.load_dataset("iris");
 #g1 = sns.distplot(iris.sepal_length, rug = True, fit = stats.gausshyper);
 
-
-
-
 defaultPath = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/'
 defaultPathProcessFile = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/processado'
 
-def extractAdquirentesFiles() :
-    fileName = 'transacoes-venda20170601-20170615.csv'
-    df = pd.read_csv(defaultPath + 'dados/' + fileName, delimiter=';', dtype=object, encoding='latin_1')
-    df = df[df['ID Único EQUALS'].isnull() == False]
-
-    df['Parcela'] = df['Parcela'].fillna(0).astype(int)
-    df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Rejeitado'] = df['Valor Rejeitado'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    #df = df.iloc[0:len(df), 2:38];
-    return df
-
+# Extrai os arquivos do menu Adquirentes/Vendas (lado adquirente/extratos eletrônicos)
 def extractAdquirenteFile(fileName) :
     df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1')
     df = df[df['ID Único EQUALS'].isnull() == False]
@@ -38,43 +23,13 @@ def extractAdquirenteFile(fileName) :
     df['Parcela'] = df['Parcela'].fillna(0).astype(int)
     df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
     df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['Valor líquido'] = df['Valor líquido'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
     df['Valor Rejeitado'] = df['Valor Rejeitado'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df = df.drop('Nro. Ref. Interna', axis=1)
     return df
 
-# Deprecated
-#def SliceAdquirentesFilesHeaderAndRows(df) :
-#    df_header = df[df['ID Único EQUALS'].isnull() == True];
-#    df_header = df_header[['Nro. Autorização', 'Vlr. Bruto', 'Vlr. Comissão', 'Vlr. Líquido', 'Vlr. Rejeitado']];
-#    df_rows = df[df['ID Único EQUALS'].isnull() == False];
-#    df_rows = df_rows.iloc[0:len(df_rows), 2:38];
-    #df_rows = df_rows.replace(np.nan, 'NULL') somente para inserir no SQL SERVER
 
-#    return df_header, df_rows;
-
-def extractIRFiles():
-    fileName = "transacoes-pagamento20170601-20170605.csv"
-    df = pd.read_csv(defaultPath + 'dados/' + fileName, delimiter=';', dtype=object, encoding='iso8859_2')
-    # Munging
-    df['Parcela'] = df['Parcela'].fillna(0).astype(int)
-    df['Valor do Pagamento'] = df['Valor do Pagamento'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor da Parcela'] = df['Valor da Parcela'].fillna('0')
-    df['Valor Adicional 1'] = df['Valor Adicional 1'].fillna('0')
-    df['Valor Adicional 2'] = df['Valor Adicional 2'].fillna('0')
-    df['Valor da Diferença'] = df['Valor da Diferença'].fillna('0')
-    df['Valor da Parcela'] = df['Valor da Parcela'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Adicional 1'] = df['Valor Adicional 1'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Adicional 2'] = df['Valor Adicional 2'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    df['Valor da Diferença'] = df['Valor da Diferença'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
-    # Slice
-    df = df[df['Bandeira'].isnull() == False]
-    #df_head = df[df['Bandeira'].isnull() == True]
-    #df_rows = df_rows.iloc[0:len(df_rows), 2:40]
-    df = df.iloc[0:len(df), 0:33]
-
-    return df
-
+# Extrai os arquivos do menu Vendas Internas/Transações de pagamento (lado ir).
 def extractIRFile(fileName) :
     df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1')
     #Slice only transaction rows
@@ -94,24 +49,8 @@ def extractIRFile(fileName) :
     df = df.iloc[0:len(df), 0:33]
     return df
 
-def extractCancelFiles():
-    fileName = 'vendas-canceladas-contestadas20170601-20170615.csv'
-    df = pd.read_csv(defaultPath + 'dados/' + fileName, delimiter=';', dtype=object, encoding='latin_1')
-    df_rows = df[df['Bandeira'].isnull() == False]
-    df_rows = df_rows.iloc[0:len(df_rows), 0:33]
 
-    df_rows['Parcela'] = df_rows['Parcela'].fillna(0).astype(int)
-    df_rows['Dt. Venda'] = df_rows['Dt. Venda'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
-    df_rows['Data Captura'] = df_rows['Data Captura'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
-    df_rows['Data do Cancelamento'] = df_rows['Data do Cancelamento'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
-    df_rows['Valor Bruto'] = df_rows['Valor Bruto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
-    df_rows['Valor Comissão'] = df_rows['Valor Comissão'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
-    df_rows['Valor Líquido'] = df_rows['Valor Líquido'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
-    df_rows['Vlr. Bruto Cancelamento'] = df_rows['Vlr. Bruto Cancelamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
-    df_rows['Vlr. Líquido Cancelamento'] = df_rows['Vlr. Líquido Cancelamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
-
-    return df_rows
-
+# Extrai os arquivos de cancelamentos do menu Cancelamentos e Chargebacks/Vendas Canceladas-Contestadas.
 def extractCancelFile(fileName) :
     df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1')
     df = df[df['Bandeira'].isnull() == False]
@@ -127,6 +66,7 @@ def extractCancelFile(fileName) :
     df['Vlr. Líquido Cancelamento'] = df['Vlr. Líquido Cancelamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     return df
 
+# Busca o nome e tipos de arquivos de conciliação e retorna na forma de listas.
 def getFileNameGroup():
     pasta = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/'
     adquirenteFiles = []
@@ -153,6 +93,7 @@ def getFileNameGroup():
 
     return adquirenteFiles, irFiles, cancelamentoFiles
 
+# Move um arquivo para outro diretório.
 def moveFile(fileName):
     return shutil.move(fileName, defaultPathProcessFile)
 
