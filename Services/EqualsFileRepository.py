@@ -66,12 +66,48 @@ def extractCancelFile(fileName) :
     df['Vlr. Líquido Cancelamento'] = df['Vlr. Líquido Cancelamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     return df
 
+# Extrai os arquivos de movimetnação financeira do menu conciliacao > agenda fincanceira
+def extractFinanceFile(fileName) :
+    df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1', error_bad_lines=False)
+    df = df[df['Histórico'].isnull() == False]
+    df['Data'] = df['Data'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Líquido Previsto'] = df['Valor Líquido Previsto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Líquido Realizado'] = df['Valor Líquido Realizado'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    return df
+
+# Extrai os arquivos de fluxo de caixa do menu adquirente > fluxo de caixa
+def extractCashFlowFile(fileName):
+    df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1', error_bad_lines=False)
+    df = df[df['Estabelecimento'].isnull() == False]
+    df['Data de Vencimento'] = df['Data de Vencimento'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    df['Data do Lote de Venda'] = df['Data do Lote de Venda'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Vendas Antec./Cedidas'] = df['Vendas Antec./Cedidas'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Cancelamentos'] = df['Cancelamentos'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Chargeback'] = df['Chargeback'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Outros Ajustes'] = df['Outros Ajustes'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor das Antecipações'] = df['Valor das Antecipações'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Descontos Antec./Cessões'] = df['Descontos Antec./Cessões'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Previsto'] = df['Valor Previsto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Pago'] = df['Valor Pago'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Saldo'] = df['Saldo'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Vendas Cedidas'] = df['Vendas Cedidas'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Cessões Avulsas'] = df['Cessões Avulsas'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+
+    return df
+
+
 # Busca o nome e tipos de arquivos de conciliação e retorna na forma de listas.
-def getFileNameGroup():
+def getFileNameGroup(type):
     pasta = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/'
     adquirenteFiles = []
     irFiles = []
     cancelamentoFiles = []
+    movimentoFinanceiroFiles = []
+    fluxoCaixaFiles = []
 
     caminhos = [os.path.join(pasta, nome) for nome in os.listdir(pasta)]
     arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
@@ -90,13 +126,28 @@ def getFileNameGroup():
             irFiles.append(fileName)
         elif 'vendas-canceladas-contestadas' in fileName:
             cancelamentoFiles.append(fileName)
+        elif 'movimentacao-financeira' in fileName:
+            movimentoFinanceiroFiles.append(fileName)
+        elif 'FluxoCaixa' in fileName:
+            fluxoCaixaFiles.append(fileName)
 
-    return adquirenteFiles, irFiles, cancelamentoFiles
+    if type == 0:
+        return adquirenteFiles
+    elif type == 1:
+        return irFiles
+    elif type == 2:
+        return cancelamentoFiles
+    elif type == 3:
+        return movimentoFinanceiroFiles
+    elif type == 4:
+        return fluxoCaixaFiles
+    else:
+        return
+    #return adquirenteFiles, irFiles, cancelamentoFiles, movimentoFinanceiroFiles
 
 # Move um arquivo para outro diretório.
 def moveFile(fileName):
     return shutil.move(fileName, defaultPathProcessFile)
-
 
 #print(extractCancelFiles().head())
 

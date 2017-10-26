@@ -24,8 +24,6 @@ def insertDsTransacaoAdquirente(cursor, conn, dfRows):
     dfRows['Data'] = dfRows['Data'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
     dfRows['Data Captura'] = dfRows['Data Captura'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'),na_action='ignore')
     dfRows['Data da Situação'] = dfRows['Data da Situação'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'),na_action='ignore')
-    #dfRows['Data'] = dfRows['Data'].map(lambda x:str(x).replace(" 00:00:00", ""))
-    #dfRows['Data'] = dfRows['Data'].map(lambda x:datetime.strptime(str(x), "%Y-%d-%m").strftime('%Y-%m-%d'), na_action='ignore')
 
     cursor.executemany(
         "INSERT INTO [dbo].[dsTransacaoAdquirente] ([NroAutorizacao] ,[IDERP] "
@@ -131,8 +129,80 @@ def insertDsCancelamento(cursor, conn, dfRows):
 
     cursor.executemany(query, dfRows.values.tolist())
     conn.commit()
-
     return True
+
+def insertDsMovimentoFinanceiro(conn, cursor, df):
+    # convert na, nan e nat para NULL
+    df = df.astype(object).where(pd.notnull(df), None)
+    query = ("INSERT INTO [dbo].[dsMovimentoFinanceiro] "
+           "([Data] "
+           ",[Adquirente] "
+           ",[Estabelecimento] "
+           ",[Categoria do Estabelecimento] "
+           ",[Bandeira] "
+           ",[Tipo da Venda] "
+           ",[Produto] "
+           ",[Banco] "
+           ",[Agência] "
+           ",[Conta] "
+           ",[Lote] "
+           ",[Lote Original] "
+           ",[Lote Único] "
+           ",[Histórico] "
+           ",[Parcela] "
+           ",[Valor Bruto] "
+           ",[Valor Comissão] "
+           ",[Valor Líquido Previsto] "
+           ",[ValorLiquidoRealizado] "
+           ",[Cessoes]) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+
+    cursor.executemany(query, df.values.tolist())
+    conn.commit()
+    return True
+
+def saveCashFlow(conn, cursor, df):
+    # convert na, nan e nat para NULL
+    df = df.astype(object).where(pd.notnull(df), None)
+    query = ("INSERT "
+        "INTO[dbo].[dsFluxoCaixa] "       
+        "([DataVencimento] "
+        " , [Estabelecimento] "
+        " , [CategoriaEstabelecimento] "
+        " , [DataLoteVenda] "
+        " , [MesAno] "
+        " , [Adquirente] "
+        " , [FiliacaoEstabelec] "
+        " , [Bandeira] "
+        " , [TipoVenda] "
+        " , [Produto] "
+        " , [Lote] "
+        " , [LoteUnico] "
+        " , [Parcela] "
+        " , [QtdeParcelas] "
+        " , [Banco] "
+        " , [Agencia] "
+        " , [Conta] "
+        " , [ValorBruto] "
+        " , [ValorComissao] "
+        " , [VendasAntecCedidas] "
+        " , [Cancelamentos] "
+        " , [Chargeback] "
+        " , [OutrosAjustes] "
+        " , [ValorAntecipacoes] "
+        " , [DescontosAntecCessoes] "
+        " , [ValorPrevisto] "
+        " , [ValorPago] "
+        " , [Saldo] "
+        " , [VendasCedidas] "
+        " , [CessoesAvulsas] "
+        " , [DescontosCessoesAvulsas]) "
+        "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+
+    cursor.executemany(query, df.values.tolist())
+    conn.commit()
+    return True
+
 
 #conn = openConn();
 #cursor = openCursor()

@@ -38,7 +38,31 @@ def LoadDsCancelFiles():
         repository.insertDsCancelamento(cursor, conn, df)
         EqualsFileRepository.moveFile(fileName)
 
-    return True;
+    return True
+
+def LoadDsFinanceFiles():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    financeFiles = EqualsFileRepository.getFileNameGroup(3)
+
+    for fileName in financeFiles:
+        print(fileName)
+        df = EqualsFileRepository.extractFinanceFile(fileName)
+        repository.insertDsMovimentoFinanceiro(conn, cursor, df)
+        EqualsFileRepository.moveFile(fileName)
+    return True
+
+def LoadCashFlowFiles():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    cashFlowFiles = EqualsFileRepository.getFileNameGroup(4)
+    for fileName in cashFlowFiles:
+        print(fileName)
+        df = EqualsFileRepository.extractCashFlowFile(fileName)
+        repository.saveCashFlow(conn, cursor, df)
+        #EqualsFileRepository.moveFile(fileName)
+    return True
+
 
 def runETL():
     LoadDsAdquirenteFiles()
@@ -46,11 +70,13 @@ def runETL():
     LoadDsCancelFiles()
     return True;
 
+
+
 #---------------------------------------------------------
 # TESTES
 
-
-runETL()
+LoadCashFlowFiles()
+#runETL()
 
 #LoadDsAdquirenteFiles()
 #LoadDsIRFiles()
