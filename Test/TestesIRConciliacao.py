@@ -4,7 +4,7 @@ from Services import EqualsFileRepository
 def LoadDsAdquirenteFiles():
     conn = repository.openConn()
     cursor = repository.openCursor(conn)
-    filesAdquirente, filesIR, filesCancelamento = EqualsFileRepository.getFileNameGroup()
+    filesAdquirente = EqualsFileRepository.getFileNameGroup(0)
 
     for fileName in filesAdquirente:
         print(fileName)
@@ -17,7 +17,7 @@ def LoadDsAdquirenteFiles():
 def LoadDsIRFiles():
     conn = repository.openConn()
     cursor = repository.openCursor(conn)
-    filesAdquirente, filesIR, filesCancelamento = EqualsFileRepository.getFileNameGroup()
+    filesIR = EqualsFileRepository.getFileNameGroup(1)
 
     for fileName in filesIR:
         print(fileName)
@@ -30,7 +30,7 @@ def LoadDsIRFiles():
 def LoadDsCancelFiles():
     conn = repository.openConn()
     cursor = repository.openCursor(conn)
-    filesAdquirente, filesIR, filesCancelamento = EqualsFileRepository.getFileNameGroup()
+    filesCancelamento = EqualsFileRepository.getFileNameGroup(2)
 
     for fileName in filesCancelamento:
         print(fileName)
@@ -60,7 +60,7 @@ def LoadCashFlowFiles():
         print(fileName)
         df = EqualsFileRepository.extractCashFlowFile(fileName)
         repository.saveCashFlow(conn, cursor, df)
-        #EqualsFileRepository.moveFile(fileName)
+        EqualsFileRepository.moveFile(fileName)
     return True
 
 
@@ -68,6 +68,7 @@ def runETL():
     LoadDsAdquirenteFiles()
     LoadDsIRFiles()
     LoadDsCancelFiles()
+    LoadCashFlowFiles()
     return True;
 
 
@@ -75,8 +76,8 @@ def runETL():
 #---------------------------------------------------------
 # TESTES
 
-LoadCashFlowFiles()
-#runETL()
+#LoadCashFlowFiles()
+runETL()
 
 #LoadDsAdquirenteFiles()
 #LoadDsIRFiles()

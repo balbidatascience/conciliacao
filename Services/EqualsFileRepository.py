@@ -36,7 +36,7 @@ def extractIRFile(fileName) :
     df = df[df['Bandeira'].isnull() == False]
     df['Parcela'] = df['Parcela'].fillna(0).astype(int)
     df['Valor do Pagamento'] = df['Valor do Pagamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor líquido'] = df['Valor líquido'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     df['Valor da Parcela'] = df['Valor da Parcela'].fillna('0')
     df['Valor Adicional 1'] = df['Valor Adicional 1'].fillna('0')
     df['Valor Adicional 2'] = df['Valor Adicional 2'].fillna('0')
@@ -61,7 +61,7 @@ def extractCancelFile(fileName) :
     df['Data do Cancelamento'] = df['Data do Cancelamento'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
     df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor líquido'] = df['Valor líquido'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     df['Vlr. Bruto Cancelamento'] = df['Vlr. Bruto Cancelamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     df['Vlr. Líquido Cancelamento'] = df['Vlr. Líquido Cancelamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     return df
