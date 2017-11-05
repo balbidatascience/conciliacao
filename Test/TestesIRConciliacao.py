@@ -1,5 +1,6 @@
 import Services.DataBaseRepository as repository
 from Services import EqualsFileRepository
+import numpy as np
 
 def LoadDsAdquirenteFiles():
     conn = repository.openConn()
@@ -63,6 +64,14 @@ def LoadCashFlowFiles():
         EqualsFileRepository.moveFile(fileName)
     return True
 
+def LoadSaleIRFile():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    saleIRFile = EqualsFileRepository.extractIRSaleFile()
+
+    repository.saveSaleIR(conn=conn, cursor=cursor, df=saleIRFile)
+    return True
+
 
 def runETL():
     LoadDsAdquirenteFiles()
@@ -77,7 +86,7 @@ def runETL():
 # TESTES
 
 #LoadCashFlowFiles()
-runETL()
+LoadSaleIRFile()
 
 #LoadDsAdquirenteFiles()
 #LoadDsIRFiles()
