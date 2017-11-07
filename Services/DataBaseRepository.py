@@ -24,8 +24,6 @@ def insertDsTransacaoAdquirente(cursor, conn, dfRows):
     dfRows['Data'] = dfRows['Data'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
     dfRows['Data Captura'] = dfRows['Data Captura'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'),na_action='ignore')
     dfRows['Data da Situação'] = dfRows['Data da Situação'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'),na_action='ignore')
-    #dfRows['Data'] = dfRows['Data'].map(lambda x:str(x).replace(" 00:00:00", ""))
-    #dfRows['Data'] = dfRows['Data'].map(lambda x:datetime.strptime(str(x), "%Y-%d-%m").strftime('%Y-%m-%d'), na_action='ignore')
 
     cursor.executemany(
         "INSERT INTO [dbo].[dsTransacaoAdquirente] ([NroAutorizacao] ,[IDERP] "
@@ -131,10 +129,189 @@ def insertDsCancelamento(cursor, conn, dfRows):
 
     cursor.executemany(query, dfRows.values.tolist())
     conn.commit()
-
     return True
 
-#conn = openConn();
+def insertDsMovimentoFinanceiro(conn, cursor, df):
+    # convert na, nan e nat para NULL
+    df = df.astype(object).where(pd.notnull(df), None)
+    query = ("INSERT INTO [dbo].[dsMovimentoFinanceiro] "
+           "([Data] "
+           ",[Adquirente] "
+           ",[Estabelecimento] "
+           ",[Categoria do Estabelecimento] "
+           ",[Bandeira] "
+           ",[Tipo da Venda] "
+           ",[Produto] "
+           ",[Banco] "
+           ",[Agência] "
+           ",[Conta] "
+           ",[Lote] "
+           ",[Lote Original] "
+           ",[Lote Único] "
+           ",[Histórico] "
+           ",[Parcela] "
+           ",[Valor Bruto] "
+           ",[Valor Comissão] "
+           ",[Valor Líquido Previsto] "
+           ",[ValorLiquidoRealizado] "
+           ",[Cessoes]) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+
+    cursor.executemany(query, df.values.tolist())
+    conn.commit()
+    return True
+
+def saveCashFlow(conn, cursor, df):
+    # convert na, nan e nat para NULL
+    df = df.astype(object).where(pd.notnull(df), None)
+    query = ("INSERT "
+        "INTO[dbo].[dsFluxoCaixa] "       
+        "([DataVencimento] "
+        " , [Estabelecimento] "
+        " , [CategoriaEstabelecimento] "
+        " , [DataLoteVenda] "
+        " , [MesAno] "
+        " , [Adquirente] "
+        " , [FiliacaoEstabelec] "
+        " , [Bandeira] "
+        " , [TipoVenda] "
+        " , [Produto] "
+        " , [Lote] "
+        " , [LoteUnico] "
+        " , [Parcela] "
+        " , [QtdeParcelas] "
+        " , [Banco] "
+        " , [Agencia] "
+        " , [Conta] "
+        " , [ValorBruto] "
+        " , [ValorComissao] "
+        " , [VendasAntecCedidas] "
+        " , [Cancelamentos] "
+        " , [Chargeback] "
+        " , [OutrosAjustes] "
+        " , [ValorAntecipacoes] "
+        " , [DescontosAntecCessoes] "
+        " , [ValorPrevisto] "
+        " , [ValorPago] "
+        " , [Saldo] "
+        " , [VendasCedidas] "
+        " , [CessoesAvulsas] "
+        " , [DescontosCessoesAvulsas]) "
+        "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+
+    cursor.executemany(query, df.values.tolist())
+    conn.commit()
+    return True
+
+def saveSaleIR(conn, cursor, df):
+    # convert na, nan e nat para NULL
+    df = df.astype(object).where(pd.notnull(df), None)
+    query = ("INSERT INTO [dbo].[dsVendaAtivaLegado] "
+           "([is_bileto] " 
+           ",[gateway] " 
+           ",[numero_venda_ir] " 
+           ",[venda_bilheteria_id] " 
+           ",[codigo_gateway] " 
+           ",[nsu_host] " 
+           ",[nsu_sitef] " 
+           ",[paypal_id] " 
+           ",[numero_autorizacao_adquirente] " 
+           ",[data_compra] " 
+           ",[quantidade_ingressos] " 
+           ",[bandeira] " 
+           ",[tipo_cartao] " 
+           ",[nome_forma_pagamento] " 
+           ",[valor_taxa_conveniencia_total] " 
+           ",[valor_taxa_entrega_total] " 
+           ",[valor_juros_total] " 
+           ",[valor_ingressos_ativos_total] " 
+           ",[valor_compra_original_total] " 
+           ",[numero_parcelas] " 
+           ",[numero_cartao] " 
+           ",[nome_portador_cartao] " 
+           ",[status_compra] " 
+           ",[nome_comprador] " 
+           ",[email_comprador] " 
+           ",[facebook_id] " 
+           ",[cpf_comprador] " 
+           ",[telefone_comprador] " 
+           ",[id_usuario] " 
+           ",[ip_comprador] " 
+           ",[plataforma_utilizada] " 
+           ",[id_produtor_evento] " 
+           ",[nome_produtor_evento] " 
+           ",[nome_evento] " 
+           ",[id_evento] " 
+           ",[data_evento] " 
+           ",[nome_local] " 
+           ",[tipo_evento] " 
+           ",[nota_fiscal_estabelecimento_sitef] " 
+           ",[data_venda_completa] " 
+           ",[nomes_precos_ingressos_unicos]) " 
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+
+    cursor.executemany(query, df.values.tolist())
+    conn.commit()
+    return True
+
+def saveIRCancelLegacySale(conn, cursor, df):
+        # convert na, nan e nat para NULL
+        df = df.astype(object).where(pd.notnull(df), None)
+        query = ("INSERT INTO [dbo].[dsVendaCanceladaLegado] "
+           "([is_bileto] "
+           ",[gateway] "
+           ",[numero_venda_ir] "
+           ",[venda_bilheteria_id] "
+           ",[numero_cancelamento_ir] "
+	       ",[cancelamento_bilheteria_id] "
+           ",[codigo_gateway] "
+           ",[nsu_host] "
+           ",[nsu_sitef] "
+           ",[paypal_id] "
+           ",[numero_autorizacao_adquirente] "
+           ",[data_compra] "
+           ",[data_cancelamento] "
+           ",[quantidade_ingressos] "
+           ",[bandeira] "
+           ",[tipo_cartao] "
+           ",[nome_forma_pagamento] "
+           ",[valor_taxa_conveniencia_total] "
+           ",[valor_taxa_entrega_total] "
+           ",[valor_juros_total] "
+           ",[valor_ingressos_cancelados_total] "
+           ",[valor_compra_cancelada_total] "
+           ",[valor_compra_original_total] "
+           ",[numero_parcelas] "
+           ",[numero_cartao] "
+           ",[nome_portador_cartao] "
+           ",[status_compra] "
+           ",[nome_comprador] "
+           ",[email_comprador] "
+           ",[facebook_id] "
+           ",[cpf_comprador] "
+           ",[telefone_comprador] "
+           ",[id_usuario] "
+           ",[ip_comprador] "
+           ",[plataforma_utilizada] "
+           ",[id_produtor_evento] "
+           ",[nome_produtor_evento] "
+           ",[nome_evento] "
+           ",[id_evento] "
+           ",[data_evento] "
+           ",[nome_local] "
+           ",[tipo_evento] "
+           ",[nota_fiscal_estabelecimento_sitef] "
+           ",[data_cancelamento_completa] "
+           ",[nomes_precos_ingressos_unicos]) "
+           " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+
+        cursor.executemany(query, df.values.tolist())
+        conn.commit()
+        return True
+
+
+
+    #conn = openConn();
 #cursor = openCursor()
 
 #map(SqlService.insertDsEstabelecimento_tmp, cursor, conn,
