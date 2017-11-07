@@ -72,6 +72,14 @@ def LoadSaleIRFile():
     repository.saveSaleIR(conn=conn, cursor=cursor, df=saleIRFile)
     return True
 
+def LoadIRCancelLegacySaleFile():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    saleIRFile = EqualsFileRepository.extractIRCancelLegacySalesFile()
+
+    repository.saveIRCancelLegacySale(conn=conn, cursor=cursor, df=saleIRFile)
+    return True
+
 
 def runETL():
     LoadDsAdquirenteFiles()
@@ -86,7 +94,8 @@ def runETL():
 # TESTES
 
 #LoadCashFlowFiles()
-LoadSaleIRFile()
+#LoadSaleIRFile()
+LoadIRCancelLegacySaleFile()
 
 #LoadDsAdquirenteFiles()
 #LoadDsIRFiles()
