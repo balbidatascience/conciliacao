@@ -1,10 +1,11 @@
 import Services.DataBaseRepository as repository
 from Services import EqualsFileRepository
+import numpy as np
 
 def LoadDsAdquirenteFiles():
     conn = repository.openConn()
     cursor = repository.openCursor(conn)
-    filesAdquirente, filesIR, filesCancelamento = EqualsFileRepository.getFileNameGroup()
+    filesAdquirente = EqualsFileRepository.getFileNameGroup(0)
 
     for fileName in filesAdquirente:
         print(fileName)
@@ -17,7 +18,7 @@ def LoadDsAdquirenteFiles():
 def LoadDsIRFiles():
     conn = repository.openConn()
     cursor = repository.openCursor(conn)
-    filesAdquirente, filesIR, filesCancelamento = EqualsFileRepository.getFileNameGroup()
+    filesIR = EqualsFileRepository.getFileNameGroup(1)
 
     for fileName in filesIR:
         print(fileName)
@@ -30,7 +31,7 @@ def LoadDsIRFiles():
 def LoadDsCancelFiles():
     conn = repository.openConn()
     cursor = repository.openCursor(conn)
-    filesAdquirente, filesIR, filesCancelamento = EqualsFileRepository.getFileNameGroup()
+    filesCancelamento = EqualsFileRepository.getFileNameGroup(2)
 
     for fileName in filesCancelamento:
         print(fileName)
@@ -38,19 +39,63 @@ def LoadDsCancelFiles():
         repository.insertDsCancelamento(cursor, conn, df)
         EqualsFileRepository.moveFile(fileName)
 
-    return True;
+    return True
+
+def LoadDsFinanceFiles():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    financeFiles = EqualsFileRepository.getFileNameGroup(3)
+
+    for fileName in financeFiles:
+        print(fileName)
+        df = EqualsFileRepository.extractFinanceFile(fileName)
+        repository.insertDsMovimentoFinanceiro(conn, cursor, df)
+        EqualsFileRepository.moveFile(fileName)
+    return True
+
+def LoadCashFlowFiles():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    cashFlowFiles = EqualsFileRepository.getFileNameGroup(4)
+    for fileName in cashFlowFiles:
+        print(fileName)
+        df = EqualsFileRepository.extractCashFlowFile(fileName)
+        repository.saveCashFlow(conn, cursor, df)
+        EqualsFileRepository.moveFile(fileName)
+    return True
+
+def LoadSaleIRFile():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    saleIRFile = EqualsFileRepository.extractIRSaleFile()
+
+    repository.saveSaleIR(conn=conn, cursor=cursor, df=saleIRFile)
+    return True
+
+def LoadIRCancelLegacySaleFile():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    saleIRFile = EqualsFileRepository.extractIRCancelLegacySalesFile()
+
+    repository.saveIRCancelLegacySale(conn=conn, cursor=cursor, df=saleIRFile)
+    return True
+
 
 def runETL():
     LoadDsAdquirenteFiles()
     LoadDsIRFiles()
     LoadDsCancelFiles()
+    LoadCashFlowFiles()
     return True;
+
+
 
 #---------------------------------------------------------
 # TESTES
 
-
-runETL()
+#LoadCashFlowFiles()
+#LoadSaleIRFile()
+LoadIRCancelLegacySaleFile()
 
 #LoadDsAdquirenteFiles()
 #LoadDsIRFiles()

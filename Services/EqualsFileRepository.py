@@ -1,10 +1,5 @@
 from datetime import datetime
 import pandas as pd
-#import numpy as np
-#import matplotlib as plt
-#from scipy import stats
-#import seaborn as sns
-#import pyodbc
 import os
 import shutil
 
@@ -36,7 +31,7 @@ def extractIRFile(fileName) :
     df = df[df['Bandeira'].isnull() == False]
     df['Parcela'] = df['Parcela'].fillna(0).astype(int)
     df['Valor do Pagamento'] = df['Valor do Pagamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor líquido'] = df['Valor líquido'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     df['Valor da Parcela'] = df['Valor da Parcela'].fillna('0')
     df['Valor Adicional 1'] = df['Valor Adicional 1'].fillna('0')
     df['Valor Adicional 2'] = df['Valor Adicional 2'].fillna('0')
@@ -61,17 +56,103 @@ def extractCancelFile(fileName) :
     df['Data do Cancelamento'] = df['Data do Cancelamento'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
     df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
-    df['Valor Líquido'] = df['Valor Líquido'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor líquido'] = df['Valor líquido'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     df['Vlr. Bruto Cancelamento'] = df['Vlr. Bruto Cancelamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     df['Vlr. Líquido Cancelamento'] = df['Vlr. Líquido Cancelamento'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     return df
 
+# Extrai os arquivos de movimetnação financeira do menu conciliacao > agenda fincanceira
+def extractFinanceFile(fileName) :
+    df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1', error_bad_lines=False)
+    df = df[df['Histórico'].isnull() == False]
+
+    df['Data'] = df['Data'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Líquido Previsto'] = df['Valor Líquido Previsto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Líquido Realizado'] = df['Valor Líquido Realizado'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    return df
+
+# Extrai os arquivos de fluxo de caixa do menu adquirente > fluxo de caixa
+def extractCashFlowFile(fileName):
+    df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1') # error_bad_lines=False --> ignora linhas com erro.
+    df = df[df['Estabelecimento'].isnull() == False]
+
+    df['Data de Vencimento'] = df['Data de Vencimento'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    df['Data do Lote de Venda'] = df['Data do Lote de Venda'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
+    df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Vendas Antec./Cedidas'] = df['Vendas Antec./Cedidas'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Cancelamentos'] = df['Cancelamentos'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Chargeback'] = df['Chargeback'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Outros Ajustes'] = df['Outros Ajustes'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor das Antecipações'] = df['Valor das Antecipações'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Descontos Antec./Cessões'] = df['Descontos Antec./Cessões'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Previsto'] = df['Valor Previsto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Valor Pago'] = df['Valor Pago'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Saldo'] = df['Saldo'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Vendas Cedidas'] = df['Vendas Cedidas'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Cessões Avulsas'] = df['Cessões Avulsas'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+
+    return df
+
+def extractIRSaleFile():
+    fileName = "D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/ComprasAtivasLegado_v1.csv"
+    df = pd.read_csv(fileName, delimiter=',', dtype=object, encoding='UTF-8')
+
+    df['venda_bilheteria_id'] = df['venda_bilheteria_id'].map(lambda x: x.replace('.', ''))
+    df['id_usuario'] = df['id_usuario'].map(lambda x: x.replace('.', ''))
+    df['id_evento'] = df['id_evento'].map(lambda x: x.replace('.', ''))
+    df['id_produtor_evento'] = df['id_produtor_evento'].map(lambda x: x.replace('.', ''))
+    df['data_compra'] = df['data_compra'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S'), na_action='ignore')
+    df['data_evento'] = df['data_evento'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y %H:%M").strftime('%Y-%m-%d %H:%M'), na_action='ignore')
+    df['data_venda_completa'] = df['data_venda_completa'].astype(datetime)
+    df['quantidade_ingressos'] = df['quantidade_ingressos'].astype(int)
+    df['valor_taxa_conveniencia_total'] = df['valor_taxa_conveniencia_total'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['valor_taxa_entrega_total'] = df['valor_taxa_entrega_total'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['valor_juros_total'] = df['valor_juros_total'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['valor_ingressos_ativos_total'] = df['valor_ingressos_ativos_total'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['valor_compra_original_total'] = df['valor_compra_original_total'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['numero_parcelas'] = df['numero_parcelas'].astype(int)
+    df['numero_cartao'] = df['numero_cartao'].map(lambda x: x.replace('X', '*'))
+
+    return df
+
+def extractIRCancelLegacySalesFile():
+    fileName = "D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/ComprasCanceladasLegado_v1.csv"
+    df = pd.read_csv(fileName, delimiter=',', dtype=object, encoding='UTF-8')
+
+    df['venda_bilheteria_id'] = df['venda_bilheteria_id'].map(lambda x: x.replace('.', ''))
+    df['numero_cancelamento_ir'] = df['numero_cancelamento_ir'].map(lambda x: x.replace('.', ''))
+    df['cancelamento_bilheteria_id'] = df['cancelamento_bilheteria_id'].map(lambda x: x.replace('.', ''))
+    df['id_usuario'] = df['id_usuario'].map(lambda x: str(x).replace('.', ''))
+    df['id_evento'] = df['id_evento'].map(lambda x: x.replace('.', ''))
+    df['id_produtor_evento'] = df['id_produtor_evento'].map(lambda x: x.replace('.', ''))
+    df['data_compra'] = df['data_compra'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S'), na_action='ignore')
+    df['data_cancelamento'] = df['data_cancelamento'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S'), na_action='ignore')
+    df['data_evento'] = df['data_evento'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y %H:%M").strftime('%Y-%m-%d %H:%M'), na_action='ignore')
+    df['data_cancelamento_completa'] = df['data_cancelamento_completa'].astype(datetime)
+    df['quantidade_ingressos'] = df['quantidade_ingressos'].astype(int)
+    df['valor_taxa_conveniencia_total'] = df['valor_taxa_conveniencia_total'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['valor_taxa_entrega_total'] = df['valor_taxa_entrega_total'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['valor_juros_total'] = df['valor_juros_total'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['valor_ingressos_cancelados_total'] = df['valor_ingressos_cancelados_total'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['valor_compra_cancelada_total'] = df['valor_compra_cancelada_total'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['valor_compra_origem_total'] = df['valor_compra_origem_total'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
+    df['numero_parcelas'] = df['numero_parcelas'].astype(int)
+    df['numero_cartao'] = df['numero_cartao'].map(lambda x: str(x).replace('X', '*'))
+
+    return df
+
+
 # Busca o nome e tipos de arquivos de conciliação e retorna na forma de listas.
-def getFileNameGroup():
+def getFileNameGroup(type):
     pasta = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/'
     adquirenteFiles = []
     irFiles = []
     cancelamentoFiles = []
+    movimentoFinanceiroFiles = []
+    fluxoCaixaFiles = []
 
     caminhos = [os.path.join(pasta, nome) for nome in os.listdir(pasta)]
     arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
@@ -90,13 +171,28 @@ def getFileNameGroup():
             irFiles.append(fileName)
         elif 'vendas-canceladas-contestadas' in fileName:
             cancelamentoFiles.append(fileName)
+        elif 'movimentacao-financeira' in fileName:
+            movimentoFinanceiroFiles.append(fileName)
+        elif 'FluxoCaixa' in fileName:
+            fluxoCaixaFiles.append(fileName)
 
-    return adquirenteFiles, irFiles, cancelamentoFiles
+    if type == 0:
+        return adquirenteFiles
+    elif type == 1:
+        return irFiles
+    elif type == 2:
+        return cancelamentoFiles
+    elif type == 3:
+        return movimentoFinanceiroFiles
+    elif type == 4:
+        return fluxoCaixaFiles
+    else:
+        return
+    #return adquirenteFiles, irFiles, cancelamentoFiles, movimentoFinanceiroFiles
 
 # Move um arquivo para outro diretório.
 def moveFile(fileName):
     return shutil.move(fileName, defaultPathProcessFile)
-
 
 #print(extractCancelFiles().head())
 
@@ -107,8 +203,6 @@ def moveFile(fileName):
 
 #df = extractAdquirentesFiles()
 #print(df.head(10))
-
-
 
 ############
 #pasta = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/'
