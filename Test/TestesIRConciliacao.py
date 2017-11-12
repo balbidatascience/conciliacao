@@ -64,12 +64,12 @@ def LoadCashFlowFiles():
         EqualsFileRepository.moveFile(fileName)
     return True
 
-def LoadSaleIRFile():
+def LoadLegacySaleFile():
     conn = repository.openConn()
     cursor = repository.openCursor(conn)
-    saleIRFile = EqualsFileRepository.extractIRSaleFile()
+    saleIRFile = EqualsFileRepository.extractLegacySaleFile()
 
-    repository.saveSaleIR(conn=conn, cursor=cursor, df=saleIRFile)
+    repository.saveLegacySale(conn=conn, cursor=cursor, df=saleIRFile)
     return True
 
 def LoadIRCancelLegacySaleFile():
@@ -80,6 +80,21 @@ def LoadIRCancelLegacySaleFile():
     repository.saveIRCancelLegacySale(conn=conn, cursor=cursor, df=saleIRFile)
     return True
 
+def LoadBiletoSaleFile():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    saleIRFile = EqualsFileRepository.extractBiletoSaleFile()
+
+    repository.saveBiletoSale(conn=conn, cursor=cursor, df=saleIRFile)
+    return True
+
+def LoadCancelBiletoSaleFile():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    df = EqualsFileRepository.extractCancelBiletoSalesFile()
+
+    repository.saveCancelBiletoSale(conn=conn, cursor=cursor, df=df)
+    return True
 
 def runETL():
     LoadDsAdquirenteFiles()
@@ -94,8 +109,9 @@ def runETL():
 # TESTES
 
 #LoadCashFlowFiles()
-#LoadSaleIRFile()
-LoadIRCancelLegacySaleFile()
+#LoadBiletoSaleFile()
+#LoadCancelBiletoSaleFile()
+#LoadIRCancelLegacySaleFile()
 
 #LoadDsAdquirenteFiles()
 #LoadDsIRFiles()
