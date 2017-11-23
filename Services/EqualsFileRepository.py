@@ -63,7 +63,7 @@ def extractCancelFile(fileName) :
 
 # Extrai os arquivos de movimetnação financeira do menu conciliacao > agenda fincanceira
 def extractFinanceFile(fileName) :
-    df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1', error_bad_lines=False)
+    df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1')
     df = df[df['Histórico'].isnull() == False]
 
     df['Data'] = df['Data'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
@@ -77,7 +77,6 @@ def extractFinanceFile(fileName) :
 def extractCashFlowFile(fileName):
     df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1') # error_bad_lines=False --> ignora linhas com erro.
     df = df[df['Estabelecimento'].isnull() == False]
-
     df['Data de Vencimento'] = df['Data de Vencimento'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
     df['Data do Lote de Venda'] = df['Data do Lote de Venda'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
     df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
@@ -93,6 +92,10 @@ def extractCashFlowFile(fileName):
     df['Saldo'] = df['Saldo'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     df['Vendas Cedidas'] = df['Vendas Cedidas'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
     df['Cessões Avulsas'] = df['Cessões Avulsas'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Descontos Cessões Avulsas'] = df['Descontos Cessões Avulsas'].map(lambda x: str(x).replace('.', '').replace(',', '.')).astype(float)
+    df['Lote Único'] = df['Lote Único'].fillna(0).map(lambda x:str(x))
+    df['Lote'] = df['Lote'].fillna(0).map(lambda x:str(x))
+    df = df.iloc[0:len(df), 0:31]
 
     return df
 
@@ -211,7 +214,7 @@ def getFileNameGroup(type):
     csvFileNames = [arq for arq in arquivos if arq.lower().endswith(".csv")]
 
     # Caso não tenha nenhum arquivo a ser importado.
-    if len(csvFileNames) == 0: return adquirenteFiles, irFiles, cancelamentoFiles
+    if len(csvFileNames) == 0: return adquirenteFiles
 
     csvFileNames = pd.DataFrame(csvFileNames)
     csvFileNames.columns = ['File']

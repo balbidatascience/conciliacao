@@ -105,8 +105,14 @@ def runETL():
 
 
 
+# [------------MAIN-----------]
+runETL()
+
+
 #---------------------------------------------------------
 # TESTES
+
+#LoadDsAdquirenteFiles()
 
 #LoadCashFlowFiles()
 #LoadBiletoSaleFile()
