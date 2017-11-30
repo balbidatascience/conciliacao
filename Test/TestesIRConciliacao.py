@@ -96,6 +96,15 @@ def LoadCancelBiletoSaleFile():
     repository.saveCancelBiletoSale(conn=conn, cursor=cursor, df=df)
     return True
 
+def LoadIRPayment():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    df = EqualsFileRepository.extractFinanceFile()
+    repository.savePayment(conn=conn, cursor=cursor, df=df)
+    # Falta implementar este passo ...
+    #EqualsFileRepository.moveFile(fileName)
+    return True;
+
 def runETL():
     LoadDsAdquirenteFiles()
     LoadDsIRFiles()
@@ -106,7 +115,9 @@ def runETL():
 
 
 # [------------MAIN-----------]
-runETL()
+#runETL()
+
+
 
 
 #---------------------------------------------------------

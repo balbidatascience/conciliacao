@@ -200,6 +200,13 @@ def extractCancelBiletoSalesFile():
 
     return df
 
+def extractFinanceFile():
+    fileName = 'D:/Balbi/IR/Files/Contas a Receber 2017.xlsx'
+    df = pd.read_excel(fileName, sheetname='dados')
+
+    return df
+
+
 # Busca o nome e tipos de arquivos de conciliação e retorna na forma de listas.
 def getFileNameGroup(type):
     pasta = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/'

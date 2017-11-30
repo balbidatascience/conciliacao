@@ -418,6 +418,23 @@ def saveCancelBiletoSale(conn, cursor, df):
     conn.commit()
     return True
 
+def savePayment(conn, cursor, df):
+    # convert na, nan e nat para NULL
+    df = df.astype(object).where(pd.notnull(df), None)
+    query = ("INSERT INTO [dbo].[dsIRContaReceber]\
+                   ([Empresa]\
+                   ,[Banco]\
+                   ,[Agencia]\
+                   ,[Conta]\
+                   ,[FormaRecebimento]\
+                   ,[Valor]\
+                   ,[Observacao]\
+                   ,[Operadora]\
+                   ,[Data])\
+             VALUES (?,?,?,?,?,?,?,?,?)")
+    cursor.executemany(query, df.values.tolist())
+    conn.commit()
+    return True
 
     #conn = openConn();
 #cursor = openCursor()
