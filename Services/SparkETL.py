@@ -21,7 +21,7 @@ sales = session.read.csv('D:/Balbi/IR/Files/2017-11-09 11-30 Compras ativas da B
 sales.cache()
 
 # Print o schema:
-#sales.printSchema()
+sales.printSchema()
 #print(sales.take(5))
 
 # Funcoes definidas:
