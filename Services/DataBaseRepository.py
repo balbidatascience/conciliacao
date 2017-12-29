@@ -95,6 +95,7 @@ def insertDsCancelamento(cursor, conn, dfRows):
            "([TipoCancelamento] "
            ",[NroAutorizacao] "
            ",[IDERP] "
+           ",IdEquals "
            ",[Estabelecimento] "
            ",[CategoriaEstabelecimento] "
            ",[Adquirente] "
@@ -125,7 +126,7 @@ def insertDsCancelamento(cursor, conn, dfRows):
            ",[MotivoCancelamento] "
            ",[NomeTarefa] "
            ",[SituacaoTarefa]) "
-     "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+     "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
 
     cursor.executemany(query, dfRows.values.tolist())
     conn.commit()

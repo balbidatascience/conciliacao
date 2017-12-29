@@ -115,7 +115,7 @@ def runETL():
 
 
 # [------------MAIN-----------]
-#runETL()
+runETL()
 
 
 

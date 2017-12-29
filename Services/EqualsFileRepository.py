@@ -7,14 +7,15 @@ import shutil
 #iris = sns.load_dataset("iris");
 #g1 = sns.distplot(iris.sepal_length, rug = True, fit = stats.gausshyper);
 
-defaultPath = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/'
-defaultPathProcessFile = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/processado'
+defaultPath = 'D:/Balbi/IR/Dev/conciliacao/'
+defaultPathProcessFile = 'D:/Balbi/IR/Dev/conciliacao/dados/processado'
 
 # Extrai os arquivos do menu Adquirentes/Vendas (lado adquirente/extratos eletrônicos)
 def extractAdquirenteFile(fileName) :
     df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1')
     df = df[df['ID Único EQUALS'].isnull() == False]
 
+    df['ID Único EQUALS'] = df['ID Único EQUALS'].map(lambda x: str(x).replace('=', '').replace('"', '')).astype(int)
     df['Parcela'] = df['Parcela'].fillna(0).astype(int)
     df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
     df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
@@ -49,7 +50,7 @@ def extractIRFile(fileName) :
 def extractCancelFile(fileName) :
     df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1')
     df = df[df['Bandeira'].isnull() == False]
-    df = df.iloc[0:len(df), 0:33]
+    df = df.iloc[0:len(df), 0:34]
     df['Parcela'] = df['Parcela'].fillna(0).astype(int)
     df['Dt. Venda'] = df['Dt. Venda'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
     df['Data Captura'] = df['Data Captura'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
@@ -209,7 +210,7 @@ def extractFinanceFile():
 
 # Busca o nome e tipos de arquivos de conciliação e retorna na forma de listas.
 def getFileNameGroup(type):
-    pasta = 'D:/Balbi/Clientes/IngressoRapido/Conciliacao/Dev/python/conciliacao/dados/'
+    pasta = 'D:/Balbi/IR/Dev/conciliacao/dados/'
     adquirenteFiles = []
     irFiles = []
     cancelamentoFiles = []
