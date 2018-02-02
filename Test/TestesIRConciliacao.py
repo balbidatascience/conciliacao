@@ -103,7 +103,15 @@ def LoadIRPayment():
     repository.savePayment(conn=conn, cursor=cursor, df=df)
     # Falta implementar este passo ...
     #EqualsFileRepository.moveFile(fileName)
-    return True;
+    return True
+
+def LoadChargebackAccertify():
+    conn = repository.openConn()
+    cursor = repository.openCursor(conn)
+    df = EqualsFileRepository.extractCharegbackAccertifyFile()
+    repository.saveChargebackAccertify(conn, cursor, df)
+
+    return True
 
 def runETL():
     LoadDsAdquirenteFiles()
@@ -116,7 +124,7 @@ def runETL():
 
 # [------------MAIN-----------]
 runETL()
-
+#LoadChargebackAccertify()
 
 
 

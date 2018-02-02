@@ -15,7 +15,7 @@ def extractAdquirenteFile(fileName) :
     df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1')
     df = df[df['ID Único EQUALS'].isnull() == False]
 
-    df['ID Único EQUALS'] = df['ID Único EQUALS'].map(lambda x: str(x).replace('=', '').replace('"', '')).astype(int)
+    df['ID Único EQUALS'] = df['ID Único EQUALS'].map(lambda x: str(x).replace('=', '').replace('"', ''))#.astype(int)
     df['Parcela'] = df['Parcela'].fillna(0).astype(int)
     df['Valor Bruto'] = df['Valor Bruto'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
     df['Valor Comissão'] = df['Valor Comissão'].map(lambda x: x.replace('.', '').replace(',', '.')).astype(float)
@@ -50,7 +50,8 @@ def extractIRFile(fileName) :
 def extractCancelFile(fileName) :
     df = pd.read_csv(fileName, delimiter=';', dtype=object, encoding='latin_1')
     df = df[df['Bandeira'].isnull() == False]
-    df = df.iloc[0:len(df), 0:34]
+    df = df.iloc[0:len(df), 0:35]
+    df['ID Único EQUALS'] = df['ID Único EQUALS'].map(lambda x: str(x).replace('=', '').replace('"', ''))
     df['Parcela'] = df['Parcela'].fillna(0).astype(int)
     df['Dt. Venda'] = df['Dt. Venda'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
     df['Data Captura'] = df['Data Captura'].map(lambda x: datetime.strptime(str(x), "%d/%m/%Y").strftime('%Y-%m-%d'), na_action='ignore')
@@ -200,6 +201,17 @@ def extractCancelBiletoSalesFile():
     df['numero_cartao'] = df['numero_cartao'].map(lambda x: str(x).replace('X', '*'))
 
     return df
+
+# Read excel with accertify sales integrated
+def extractCharegbackAccertifyFile():
+    # Load the file
+    fileName = "D:/Balbi/IR/Files/Relatorio Setembro_17.xlsx"
+    df = pd.read_excel(fileName, sheetname='Plan1')
+
+    # Clean datas
+    df['Order Number'] = df['Order Number'].map(lambda x: str(x).replace('bileto-sales_', ''))
+    return df
+
 
 def extractFinanceFile():
     fileName = 'D:/Balbi/IR/Files/Contas a Receber 2017.xlsx'

@@ -121,12 +121,13 @@ def insertDsCancelamento(cursor, conn, dfRows):
            ",[VlrBrutoCancelamento] "
            ",[VlrLiquidoCancelamento] "
            ",[Conciliacao] "
+           ",[DtConcilJust] "
            ",[IDERPCanal] "
            ",[NomeCanal] "
            ",[MotivoCancelamento] "
            ",[NomeTarefa] "
            ",[SituacaoTarefa]) "
-     "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+     "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
 
     cursor.executemany(query, dfRows.values.tolist())
     conn.commit()
@@ -433,6 +434,20 @@ def savePayment(conn, cursor, df):
                    ,[Operadora]\
                    ,[Data])\
              VALUES (?,?,?,?,?,?,?,?,?)")
+    cursor.executemany(query, df.values.tolist())
+    conn.commit()
+    return True
+
+def saveChargebackAccertify(conn, cursor, df):
+    # convert na, nan e nat para NULL
+    df = df.astype(object).where(pd.notnull(df), None)
+    query = ("INSERT INTO [dbo].[dsCharegebackAccertify]\
+                   ([OrderDate]\
+                   ,[OrderNumber]\
+                   ,[Resolution]\
+                   ,[TotalOrderAmount]\
+                   ,[FirstEventDescription])\
+                    VALUES (?,?,?,?,?)")
     cursor.executemany(query, df.values.tolist())
     conn.commit()
     return True
