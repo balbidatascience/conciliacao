@@ -118,18 +118,18 @@ def runETL():
     LoadDsIRFiles()
     LoadDsCancelFiles()
     LoadCashFlowFiles()
-    return True;
+    return True
 
 
 
 # [------------MAIN-----------]
 runETL()
-#LoadChargebackAccertify()
-
 
 
 #---------------------------------------------------------
 # TESTES
+
+#LoadIRCancelLegacySaleFile()
 
 #LoadDsAdquirenteFiles()
 
